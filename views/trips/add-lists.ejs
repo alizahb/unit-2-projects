@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add a list to <%= trip.destination %></title>
+</head>
+<body>
+    <%- include('../partials/_navbar.ejs') %>
+    <h1>Add lists to <%= trip.destination %></h1>
+
+    <!-- Display Current Ingredients -->
+    <h2>Current Lists</h2>
+    <% if (trip.lists && trip.lists.length > 0) { %>
+        <ul>
+            <% trip.lists.forEach(list => { %>
+                <li><%= list.name %></li>
+            <% }); %>
+        </ul>
+    <% } else { %>
+        <p>No lists.</p>
+    <% } %>
+
+    <!-- Form to Add New lists -->
+    <form action="/trips/<%= trip._id %>/lists" method="POST">
+        <h2>Select list to Add</h2>
+        <% allLists.forEach(list => { %>
+            <div>
+                <input type="checkbox" name="lists" value="<%= list._id %>" id="list_<%= list._id %>">
+                <label for="list_<%= list._id %>"><%= list.name %></label>
+            </div>
+        <% }); %>
+        <br>
+        <input type="submit" value="Add Lists">
+    </form>
+
+    <a href="trips/<%= trip._id %>">Back to Trip</a>
+</body>
+</html>

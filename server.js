@@ -29,6 +29,8 @@ mongoose.connection.on('connected', () => {
       saveUninitialized: true,
     })
   );
+
+  app.use('/assets', express.static('public')); 
   
   app.get('/', (req, res) => {
     res.render('index.ejs', {
