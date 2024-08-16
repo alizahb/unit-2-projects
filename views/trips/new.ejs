@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add New Trip</title>
+</head>
+<body>
+  <%- include('../partials/_navbar.ejs') %>
+  <h1>Add New Trip</h1>
+  <form action="/trips" method="POST">
+    Destination: <input type="text" name="destination" /><br />
+    Duration: <textarea name="duration"></textarea><br />
+    <input type="submit" value="Add Trip" />
+  </form>
+</body>
+</html>
