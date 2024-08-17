@@ -26,11 +26,23 @@ router.get('/new', (req, res) => {
 //Create- post request to create a new trip
 
 router.post('/', async (req, res) => {
+  console.log('request body', req.body); 
   try {
     req.body.owner = req.session.user._id;
-    await Trip.create(req.body); 
-    res.redirect(`/trips/${req.params.tripId}`); 
-  } catch (error) {
+    await Trip.create(req.body);
+    res.redirect('/trips'); 
+    /*const newTrip = newtrip({
+      destination: req.body.destination, 
+      duration: req.body.duration, 
+      lists: req.body.lists || [],
+  }, {new: true }); 
+  //req.body.owner = req.session.user._id,
+    await newTrip.save();
+    //res.json({ success: true, trip: newTrip }); 
+    res.json(newTrip);
+    //res.redirect('/trips'); 
+  */ 
+ } catch (error) {
     res.send(error); 
   }
 }); 
