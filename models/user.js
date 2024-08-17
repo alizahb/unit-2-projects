@@ -22,8 +22,11 @@ const userSchema = mongoose.Schema({
         ref: 'Trip', 
     },
 ],
-inventory: [itemSchema], 
-}); 
+ inventory: [itemSchema], 
+ about: {
+  type: String, 
+ },
+});  
 
 
 const User = mongoose.model('User', userSchema);

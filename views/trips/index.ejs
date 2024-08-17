@@ -7,12 +7,12 @@
 </head>
 <body>
   <%- include('../partials/_navbar.ejs') %>
-  <h1>My Recipes</h1>
+  <h1>My Trips</h1>
   <a href="/trips/new">Add New Trip</a>
-  <% recipes.forEach(recipe => { %>
+  <% trips.forEach(trip => { %>
   <div>
     <a href="/trips/<%= trip._id %>">
-      <h2><%= trip.name %></h2>
+      <h2><%= trip.destination %></h2>
     </a>
   </div>
   <% }); %>

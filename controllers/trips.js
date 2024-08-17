@@ -27,9 +27,9 @@ router.get('/new', (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    req.body.owner = req.session.user._id; 
+    req.body.owner = req.session.user._id;
     await Trip.create(req.body); 
-    res.redirect(`/trips`); 
+    res.redirect(`/trips/${req.params.tripId}`); 
   } catch (error) {
     res.send(error); 
   }
@@ -58,7 +58,7 @@ router.get("/:tripId/edit", async (req, res) => {
   try {
     const trip = await Trip.findById(req.params.tripId);
     const allLists = await List.find({});
-    res.render("trips/edit.ejs", {
+    res.render('trips/edit.ejs', {
       trip: trip, 
       allLists: allLists,
     });
@@ -70,20 +70,18 @@ router.get("/:tripId/edit", async (req, res) => {
 //Update route- put request to update a trip 
 router.put('/:tripId', async (req, res) => {
   try {
-      //find existing trip
       const tripToUpdate = await Trip.findById(req.params.tripId);
       //update basic fields
-      tripToUpdate.destination = req.body.destination; 
-      tripToUpdate.duration = req.body.duration; 
+      tripToUpdate.destination = req.body.destination || tripToUpdate.destination;
+      tripToUpdate.duration = req.body.duration || tripToUpdate.duration;
       const selectedLists = Array.isArray(req.body.lists)
         ? req.body.lists
-        : [req.body.lists]; 
-       //update lists
-       tripToUpdate.lists = selectedLists; 
+        : req.body.lists ? [req.body.lists] : [];      
+       tripToUpdate.lists = selectedLists.filter(Boolean); 
        await tripToUpdate.save();  
        res.redirect(`/trips/${req.params.tripId}`); 
   } catch (error) {
-    res.send('An error occred while updating your trip details.')
+    res.send('An error occured while updating your trip details.')
   }
 
   }); 
@@ -102,7 +100,7 @@ router.put('/:tripId', async (req, res) => {
   
   // Relating Data Routes
   
-  // GET - to render an Add Ingredients view
+  // GET - to render an Add lists view
   router.get("/:tripId/add-lists", async (req, res) => {
     try {
       const trip = await Trip.findById(req.params.tripId).populate(
@@ -130,10 +128,10 @@ router.put('/:tripId', async (req, res) => {
         ? req.body.lists
         : [req.body.lists];
         trip.lists = [
-          ...new Set([...trip.lists, ...listIds]),
+          ...new Set([...trip.lists.map(String), ...listIds]),
         ];
         await trip.save(); 
-        res.redirect(`trips/${req.params.tripId}`); 
+        res.redirect(`/trips/${req.params.tripId}`); 
       } catch(error) {
         console.error(error); 
         res.send('An error occured while updating your trip.'); 

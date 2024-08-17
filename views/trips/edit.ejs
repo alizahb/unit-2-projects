@@ -7,9 +7,9 @@
 </head>
 <body>
     <%- include('../partials/_navbar.ejs') %>
-    <h1>Edit Trip - <%= trip.name %></h1>
+    <h1>Edit Trip - <%= trip.destination %></h1>
     <form action="/trips/<%= trip._id %>?_method=PUT" method="POST">
-        Destination: <input type="text" name="name" value="<%= trip.destination %>"><br>
+        Destination: <input type="text" name="destination" value="<%= trip.destination %>"><br>
         Duration: <textarea name="duration"><%= trip.duration %></textarea><br>
 
         <!-- Checkbox List f -->
@@ -18,17 +18,17 @@
             <div>
                 <input 
                     type="checkbox" 
-                    name="ingredients" 
-                    value="<%= ingredient._id %>" 
-                    id="ingredient_<%= ingredient._id %>"
-                    <% if (recipe.ingredients.some(ing => ing._id.equals(ingredient._id))) { %> checked <% } %>
+                    name="lists" 
+                    value="<%= list._id %>" 
+                    id="list_<%= list._id %>"
+                    <% if (trip.lists.some(lis => lis._id.equals(list._id))) { %> checked <% } %>
                 >
-                <label for="ingredient_<%= ingredient._id %>"><%= ingredient.name %></label>
+                <label for="list_<%= list._id %>"><%=list.name %></label>
             </div>
         <% }); %>
         <br>
 
-        <input type="submit" value="Update Recipe">
+        <input type="submit" value="Update Trip">
     </form>
 </body>
 </html>

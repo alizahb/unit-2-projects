@@ -9,7 +9,6 @@
     <%- include('../partials/_navbar.ejs') %>
     <h1>Add lists to <%= trip.destination %></h1>
 
-    <!-- Display Current Ingredients -->
     <h2>Current Lists</h2>
     <% if (trip.lists && trip.lists.length > 0) { %>
         <ul>
@@ -23,17 +22,15 @@
 
     <!-- Form to Add New lists -->
     <form action="/trips/<%= trip._id %>/lists" method="POST">
-        <h2>Select list to Add</h2>
-        <% allLists.forEach(list => { %>
             <div>
-                <input type="checkbox" name="lists" value="<%= list._id %>" id="list_<%= list._id %>">
-                <label for="list_<%= list._id %>"><%= list.name %></label>
+                <input type='text' name='list' value="<%=list.name %>" id = 'list_<%=list._id %>' > 
+                <label for='list_<%=list._id %>'><%=list.name</label>
             </div>
         <% }); %>
         <br>
-        <input type="submit" value="Add Lists">
+        <input type="submit" value="Add List">
     </form>
 
-    <a href="trips/<%= trip._id %>">Back to Trip</a>
+    <a href="/trips/<%= trip._id %>">Back to Trip</a>
 </body>
 </html>

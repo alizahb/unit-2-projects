@@ -3,7 +3,7 @@ const router = express.Router();
 const List = require("../models/list.js");
 
 // Index Route - List all packing lists 
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const lists = await List.find({});
     res.render("lists/index.ejs", {
@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Create Route - Add a new ingredient to all lists
+// Create Route - Add a new list to  all trips 
 router.post('/', async (req, res) => {
     try {
         await List.create(req.body);
