@@ -12,26 +12,15 @@
     <% if(pageOwner.inventory && pageOwner.inventory.length > 0) { %> 
         <p> Currently stocked with:</p>
         <ul>
-            <%pageOwner.inventory.forEach((item) => { %>
+            <% pageOwner.inventory.forEach((item) => { %>
                 <li><%= item.name %> - <%=item.quantity %> </li>           
               <% }) %>  
         </ul>
        <% } else { %>
         <p>There are no items in inventory.</p>
         <% } %>
-        <% if(pageOwner.trips && pageOwner.trips.length > 0) {%> 
-            <p> Upcoming Trips:</p>
-        <ul>
-            <% pageOwner.trips.forEach((trip) => { %>
-                <li> <%= trip.destination %> </li>
-            <% }) %>
-        </ul>}
-        <% } else { %> 
-            <p>There are no upcoming trips.</p>
-        <% } %>
-  
-    <a href='/trips'> My Upcoming Trips </a>
-    <a href='/users/<%= user._id %>/items '> My Inventory</a>
+    <a href='/trips'> Go To My Trips</a>
+    <a href='/users/<%= user._id %>/items '> Edit My Inventory</a>
 
    
   </body>
