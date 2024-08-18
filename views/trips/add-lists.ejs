@@ -3,45 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Add a list to <%= trip.destination %></title>
+    <title>Add a list for <%= trip.destination %></title>
 </head>
 <body>
     <%- include('../partials/_navbar.ejs') %>
-    <h1>Add lists to <%= trip.destination %></h1>
-    
-    <h2>Current Lists</h2>
-    <% if (trip.lists && trip.lists.length > 0) { %>
-        <ul>
-            <% trip.lists.forEach(list => { %>
-                <li> <%= list.description %> </li>
-                <li>Completed: <%=list.isComplete ? 'Yes' : 'No'%></li>
-                  <% }); %> 
-            </ul>  
-    <% } else { %>
-        <p>No lists.</p>
-    <% } %>
-    
-<h1>Add Items to a List for <%= trip.destination %></h1>
-<form action="/trips/<%= trip._id %>/lists/add-items" method="POST">
-<label for="list">Select List:</label> 
-<select name="listId" id="list">
-    <% trip.lists.forEach(list => { %>
-        <option value="<%=list._id"> <%= list.description %></option>
-    <% }); %> 
-    </select> 
-    <h2> Select Items from Inventory </h2>
-    <% inventory.forEach(item => { %> 
-    <div> <input
-    type ='checkbox'
-name = 'items[]'
-value='<%= item._id %>'
-id='item_<%= item.id %>' <%= item.name %> </label>
-    </div>
-<% }); %> 
-        <br>              
-        <input type="submit" value = 'Add items to List' />
-    </form>
-                <a href="/trips/<%= trip._id %>"> Back to Trip Details</a>
+    <h1>Add New List to Trip: <%= trip.destination %></h1>
+    <form action ="/trips/<%=trip._id %>/lists" method ="POST">
+        <div>
+            <label for="description"> List Description:</label>
+            <input type="text" id="description" name="description" required> 
+       </div>
+     <h2>Select Items from Inventory</h2>
+     <% if(inventory && inventory.length > 0) { %>
+    <ul>
+        <%inventory.forEach(item=> { %>
+            <li>
+                <label>
+                    <input type = 'checkbox' name = 'items' value = 'item._id%>'>
+                    <%= item.name %>
+                </label>
+            </li>
+        <% }) %>
+    </ul>
+<% } else { %>
+    <p>You have no items in your inventory.</p>
+    <% } %> 
+<button type="submit"> Add List</button>
+
             </body>
             </html> 
 

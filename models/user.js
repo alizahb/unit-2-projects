@@ -1,19 +1,8 @@
 const mongoose = require('mongoose');
-//const Schema = mongoose.Schema; 
+const Schema = mongoose.Schema; 
 
-const itemSchema = new mongoose.Schema({
-  name: {
-    type: String, 
-    required: true, 
-  }, 
-  quantity: {
-    type: Number, 
-    default: 1 
-}, 
 
-}); 
-
-const userSchema = mongoose.Schema({
+const userSchema = new Schema({
   username: {
     type: String,
     required: true,
@@ -22,10 +11,18 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  inventory: [itemSchema], 
+  inventory: [
+    {
+    type: Schema.Types.ObjectId, ref: 'Item'
+    //mongoose.Schema.Types.ObjectId, 
+
+    },
+
+  ],
+
 }); 
     
 
-const User = mongoose.model('User', userSchema);
+//const User = mongoose.model('User', userSchema);
 
-module.exports = User;
+module.exports = mongoose.model('User', userSchema); 

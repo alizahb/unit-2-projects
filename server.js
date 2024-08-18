@@ -49,7 +49,7 @@ app.use('/users', usersController);
 app.use('/', itemsController); 
 app.use("/trips", tripsController);
 app.use("/lists", listsController);
-app.use('/users/:userId/items', itemsController);
+
 app.listen(port, () => {
   console.log(`The express app is ready on port ${port}!`);
 });

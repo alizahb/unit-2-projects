@@ -3,6 +3,7 @@ const router = express.Router();
 
 const User = require('../models/user.js');
 
+
 router.get('/', async (req, res) => {
   try {
     const allUsers = await User.find();
@@ -27,18 +28,6 @@ router.get('/:userId', async (req, res) => {
 
 
  
-router.get('/:userId', async (req, res) => {
-  try {
-    const pageOwner = awaitUser.findById(req.params.userId);
-    if (!pageOwner) {
-      return res.redirect('/'); 
-    }
-    res.render('/users/show.ejs', {pageOwner});
-  } catch (error) {
-    console.error(error); 
-    res.redirect('/'); 
-  }
-}); 
 
 
 module.exports = router;

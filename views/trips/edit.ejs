@@ -7,12 +7,16 @@
 </head>
 <body>
     <%- include('../partials/_navbar.ejs') %>
+   
     <h1>Edit Trip - <%= trip.destination %></h1>
+    
     <form action="/trips/<%= trip._id %>?_method=PUT" method="POST">
         Destination: <input type="text" name="destination" value="<%= trip.destination %>"><br>
         Duration: <textarea name="duration"><%= trip.duration %></textarea><br>
-        <input type ='submit' value="Update Trip"> </form> 
-    <h2>
+        <input type ='submit' value="Update Trip"> 
+    </form> 
+    
+    <h2> Lists </h2>
         <%if (trip.lists && trip.lists.length > 0) { %>
         <ul>
             <% trip.lists.forEach(list => { %>
@@ -29,10 +33,10 @@
    <% } else { %>
         <p>No lists yet</p>
         <% } %>
-    <h2> Add New List </h2>
+    
+        <h2> Add New List </h2>
         <form action="/trips/<%=trip._id %>/lists" method="POST">
-        Description:
-        <input type="text" name="description" placeholder = 'Add list description'> <br> </input type>
+        Description: <input type="text" name="description" placeholder = 'Add list description'> <br> </input type>
         <input type ='submit' value = 'Add List'> 
        <button type="submit">Add List</button></form>
        <input type="submit" value="Update Trip">

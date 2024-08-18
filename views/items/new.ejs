@@ -7,7 +7,7 @@
 </head>
   <body>
     <%- include('../partials/_navbar.ejs') %>
-    <form action="/users/<%= user._id %>/items" method="POST">
+    <form action="/users/<%= user._id %>/items/" method="POST">
       <label for="Name">Name:</label>
       <input type="text" name="name" id="name">
       <label for="quantity"> Quantity: </label>

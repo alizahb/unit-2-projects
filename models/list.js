@@ -7,7 +7,10 @@ const listSchema = new Schema({
         type: String, 
         required: true, 
     }, 
-    
+    items: [
+        { 
+    type: Schema.Types.ObjectId, ref: 'InventoryItem'},
+    ],
     isComplete: {
         type: Boolean, 
         default: false, 
@@ -16,5 +19,5 @@ const listSchema = new Schema({
     }); 
 
 
-
-    module.exports = mongoose.model('List', listSchema);
+    const List = mongoose.model('List', listSchema); 
+    module.exports = List 
