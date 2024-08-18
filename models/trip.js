@@ -1,6 +1,7 @@
 const mongoose = require('mongoose'); 
+const Schema = mongoose.Schema; 
 
-const tripSchema = new mongoose.Schema({
+const tripSchema = new Schema({
     destination: {
         type: String,
         required: true,
@@ -14,13 +15,14 @@ const tripSchema = new mongoose.Schema({
         ref: "User",
         required: true,
       },
-
     lists: [
         {
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: 'List'
+        type: Schema.Types.ObjectId, ref: 'List'
+        //mongoose.Schema.Types.ObjectId, 
+
         },
     ],
 });
 
-module.exports = mongoose.model('Trip', tripSchema); 
+
+module.exports = mongoose.model('Trip', tripSchema)

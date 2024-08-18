@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= trip.destination%></title>
+    <title><%= trip.destination %></title>
   </head>
   <body>
     <%- include('../partials/_navbar.ejs') %>
     <h1><%= trip.destination %></h1>
     <p><%= trip.duration %></p>
 
-    <!--lists -->
+  
     <h2>Lists</h2>
     <% if (trip.lists && trip.lists.length > 0) { %>
       <ul>
@@ -19,11 +19,11 @@
         <% }); %>
       </ul>
     <% } else { %>
-      <p>No lists created.</p>
+      <p>No lists created yet.</p>
     <% } %>
 
     <!-- Link to Add lists View -->
-    <a href="/trips/<%=trip._id %>/add-lists">Add Lists</a>
+    <a href="/trips/<%=trip._id %>/add-lists">Add a List</a>
 
     <!-- Edit and Delete options -->
     <a href="/trips/<%= trip._id %>/edit">Edit Trip</a>

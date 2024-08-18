@@ -9,7 +9,7 @@
     <%- include('../partials/_navbar.ejs') %>
     <h1>Lists</h1>
 
-    <p>Don't see what you are looking for? Add it to our list!</p>
+    <p>Don't see what you are looking for? Add it to the list!</p>
 
     <% if (lists && lists.length > 0) { %>
         <ul>
@@ -21,7 +21,7 @@
         <p>No lists yet.</p>
     <% } %>
 
-    <!-- Form to add new list -->
+
     <h2>Add New List</h2>
     <form action="/lists" method="POST">
         Name: <input type="text" name="name"><br>

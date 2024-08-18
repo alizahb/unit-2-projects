@@ -3,18 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= pageOwner.username %>'s </title>
+  <title><%= pageOwner.username %>'s Profile </title>
 </head>
 <body>
     <%- include('../partials/_navbar.ejs') %>
     <h1> <%= pageOwner.username %>'s Profile</h1>
        
-    <div>
+    <% if(pageOwner.inventory && pageOwner.inventory.length > 0) { %> 
+        <p> Currently stocked with:</p>
+        <ul>
+            <%pageOwner.inventory.forEach((item) => { %>
+                <li><%= item.name %> - <%=item.quantity %> </li>           
+              <% }) %>  
+        </ul>
+       <% } else { %>
+        <p>There are no items in inventory.</p>
+        <% } %>
+        <% if(pageOwner.trips && pageOwner.trips.length > 0) {%> 
+            <p> Upcoming Trips:</p>
+        <ul>
+            <% pageOwner.trips.forEach((trip) => { %>
+                <li> <%= trip.destination %> </li>
+            <% }) %>
+        </ul>}
+        <% } else { %> 
+            <p>There are no upcoming trips.</p>
+        <% } %>
+  
     <a href='/trips'> My Upcoming Trips </a>
     <a href='/users/<%= user._id %>/items '> My Inventory</a>
-    </div>
+
    
   </body>
   </html>
 
-  </form>
+

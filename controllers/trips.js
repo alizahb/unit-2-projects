@@ -4,7 +4,6 @@ const Trip = require("../models/trip.js");
 const List = require("../models/list.js");
 const User = require("../models/user.js"); 
 
-//Index Route- show user's trips 
 
 router.get('/', async (req, res) => {
   try {
@@ -17,13 +16,11 @@ router.get('/', async (req, res) => {
   }
 }); 
 
-//New route - form to create new trip 
 
 router.get('/new', (req, res) => {
   res.render('trips/new.ejs'); 
 }); 
 
-//Create- post request to create a new trip
 
 router.post('/', async (req, res) => {
   console.log('request body', req.body); 
@@ -31,29 +28,20 @@ router.post('/', async (req, res) => {
     req.body.owner = req.session.user._id;
     await Trip.create(req.body);
     res.redirect('/trips'); 
-    /*const newTrip = newtrip({
-      destination: req.body.destination, 
-      duration: req.body.duration, 
-      lists: req.body.lists || [],
-  }, {new: true }); 
-  //req.body.owner = req.session.user._id,
-    await newTrip.save();
-    //res.json({ success: true, trip: newTrip }); 
-    res.json(newTrip);
-    //res.redirect('/trips'); 
-  */ 
  } catch (error) {
     res.send(error); 
   }
 }); 
 
-//Show route- show a single trip details 
 
 router.get('/:tripId', async (req, res) => {
   try {
     const trip = await Trip.findById(req.params.tripId).populate(
       'lists'
     ); 
+    if (!trip) {
+      return res.status(404).send('Trip not found');
+    }
     const allLists = await List.find({}); 
     res.render('trips/show.ejs', {
       trip: trip,
@@ -64,41 +52,83 @@ router.get('/:tripId', async (req, res) => {
   }
 });
 
-//edit route- form to edit existing trip 
 
 router.get("/:tripId/edit", async (req, res) => {
   try {
-    const trip = await Trip.findById(req.params.tripId);
-    const allLists = await List.find({});
-    res.render('trips/edit.ejs', {
-      trip: trip, 
-      allLists: allLists,
-    });
+    const trip = await Trip.findById(req.params.tripId).populate('lists');
+    if (!trip) {
+      return res.status(404).send('Trip not found'); 
+    }
+   
+    res.render('trips/edit.ejs', {trip}); 
   } catch (error) {
     res.send(error);
+    res.redirect('/'); 
   }
 });
 
-//Update route- put request to update a trip 
+
 router.put('/:tripId', async (req, res) => {
-  try {
+    try {
       const tripToUpdate = await Trip.findById(req.params.tripId);
-      //update basic fields
-      tripToUpdate.destination = req.body.destination || tripToUpdate.destination;
-      tripToUpdate.duration = req.body.duration || tripToUpdate.duration;
+      if (!tripToUpdate) {
+        return res.status(404).send('Trip not found'); 
+      }
+      tripToUpdate.destination = req.body.destination; 
+      tripToUpdate.duration = req.body.duration; 
       const selectedLists = Array.isArray(req.body.lists)
-        ? req.body.lists
-        : req.body.lists ? [req.body.lists] : [];      
-       tripToUpdate.lists = selectedLists.filter(Boolean); 
-       await tripToUpdate.save();  
-       res.redirect(`/trips/${req.params.tripId}`); 
-  } catch (error) {
-    res.send('An error occured while updating your trip details.')
-  }
+      ? req.body.lists
+      : [req.body.lists]; 
+      const validLists = await List.find({ _id: { $in: selectedLists } });
+    
+      tripToUpdate.lists = validLists.map(list => list._id); 
+      await tripToUpdate.save();
+      res.redirect('/trips'); 
+    } catch (error) {
+      console.error(error);
+      res.send('An error occured while updating trip'); 
+    }
+  });
+/*
+  router.post('/trips/:id/lists', async (req, res) => {
+    try {
+    const tripId = req.params.id; 
+      const trip = awaitTrip.findById(tripId);
+      if (!trip) {
+        return res.redirect('/trips');
+      }
+      const newList = newList({ description: req.body.description });
+      trip.lists.push(newList);
+      await newList.save();
+      await trip.save();
+      res.redirect(`/trips/${tripId}/edit`);
+    } catch (error) {
+      console.error(error);
+      res.redirect('/trips');
+    };
+  });
+*/
 
-  }); 
 
-  //DELETe route - delete a specific trip 
+  router.post('/:tripId/lists/add-items', async (req, res) => {
+    try {
+      const { listId, items } = req.body;
+      const trip = awaitTrip.findById(req.params.tripId);
+      const list = trip.lists.id(listId);
+  
+      if (list) {
+        list.items = items; // Assuming list.items is an array of item IDsawait trip.save();
+        res.redirect(`/trips/${trip._id}`);
+      } else {
+        res.status(404).send('List not found');
+      }
+    } catch (error) {
+      console.error(error);
+      res.redirect('/');
+    }
+  });
+
+
 
   router.delete("/:tripId", async (req, res) => {
     try {
@@ -109,9 +139,9 @@ router.put('/:tripId', async (req, res) => {
       res.send(error);
     }
   });
-  
-  // Relating Data Routes
-  
+
+
+
   // GET - to render an Add lists view
   router.get("/:tripId/add-lists", async (req, res) => {
     try {
@@ -130,24 +160,29 @@ router.put('/:tripId', async (req, res) => {
     }
   });
   
-  // POST - to add lists to a trip 
-  router.post("/:tripId/lists", async (req, res) => {
+//Post -add lists to trip 
+
+router.post('/:tripId/lists', async (req, res) => {
     try {
       const trip = await Trip.findById(req.params.tripId);
-  
-      // Ensure req.body.lists is array
-      const listIds = Array.isArray(req.body.lists)
-        ? req.body.lists
-        : [req.body.lists];
-        trip.lists = [
-          ...new Set([...trip.lists.map(String), ...listIds]),
-        ];
-        await trip.save(); 
-        res.redirect(`/trips/${req.params.tripId}`); 
-      } catch(error) {
-        console.error(error); 
-        res.send('An error occured while updating your trip.'); 
-      }
-    }); 
+      const listIds= Array.isArray(req.body.lists) 
+      ? req.body.lists : [req.body.lists];
+      
+      trip.lists = [
+        ...new Set ([...trip.lists, ...listIds]),
+      ];
+      await trip.save(); 
+
+      res.redirect(`trips/${req.params.recipeId}`); 
+    } catch(error) {
+      console.error(error);
+      resnsend('An error occured while updating your trip'); 
+    }
+  });
+      /*const newList = newList({
+        items: selectedItems, 
+        trip: trip._id
+      }); */
+ 
   
   module.exports = router 

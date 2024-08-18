@@ -1,10 +1,16 @@
 const mongoose = require('mongoose');
+//const Schema = mongoose.Schema; 
 
 const itemSchema = new mongoose.Schema({
   name: {
-      type: String, 
-      required: true, 
-  },
+    type: String, 
+    required: true, 
+  }, 
+  quantity: {
+    type: Number, 
+    default: 1 
+}, 
+
 }); 
 
 const userSchema = mongoose.Schema({
@@ -16,18 +22,9 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-   trips: [
-    {
-        type: mongoose.Types.ObjectId,
-        ref: 'Trip', 
-    },
-],
- inventory: [itemSchema], 
- about: {
-  type: String, 
- },
-});  
-
+  inventory: [itemSchema], 
+}); 
+    
 
 const User = mongoose.model('User', userSchema);
 

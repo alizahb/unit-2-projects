@@ -23,10 +23,11 @@ mongoose.connection.on('connected', () => {
   console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
 });
 
-app.use(express.json()); 
-app.use(express.urlencoded({extended: true})); 
+//app.use(express.json()); 
+app.use(express.urlencoded({extended: false})); 
 app.use(methodOverride('_method'));
 // app.use(morgan('dev'));
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -45,10 +46,10 @@ app.use(passUserToView);
 app.use('/auth', authController);
 app.use(isSignedIn);
 app.use('/users', usersController);
-app.use('/users/:userId/items', itemsController);
+app.use('/', itemsController); 
 app.use("/trips", tripsController);
 app.use("/lists", listsController);
-
+app.use('/users/:userId/items', itemsController);
 app.listen(port, () => {
   console.log(`The express app is ready on port ${port}!`);
 });

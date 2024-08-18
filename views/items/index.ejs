@@ -7,20 +7,19 @@
 </head>
 <body>
   <%- include('../partials/_navbar.ejs') %>
-  <h1>Welcome to my Inventory </h1>
+  <h1>My Inventory </h1>
   <a href="/users/<%= user._id %>/items/new">Add New Item</a>
-  <% if(inventory.length) { %>
+  <% if(inventory.length) { %> 
   <ul>
     <% inventory.forEach((item)=>{ %>
       <li>
-        <%= item.name %>
+        <%= item.name %> - <%= item.quantity %>
         <a href="/users/<%= user._id %>/items/<%= item._id %>/edit">
           Edit
         </a>
         <form
           action="/users/<%= user._id %>/items/<%= item._id %>?_method=DELETE"
-          method="POST"
-        >
+          method="POST" >
           <button type="submit">Delete</button>
         </form>
       </li>

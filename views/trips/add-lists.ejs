@@ -8,29 +8,41 @@
 <body>
     <%- include('../partials/_navbar.ejs') %>
     <h1>Add lists to <%= trip.destination %></h1>
-
+    
     <h2>Current Lists</h2>
     <% if (trip.lists && trip.lists.length > 0) { %>
         <ul>
             <% trip.lists.forEach(list => { %>
-                <li><%= list.name %></li>
-            <% }); %>
-        </ul>
+                <li> <%= list.description %> </li>
+                <li>Completed: <%=list.isComplete ? 'Yes' : 'No'%></li>
+                  <% }); %> 
+            </ul>  
     <% } else { %>
         <p>No lists.</p>
     <% } %>
-
-    <!-- Form to Add New lists -->
-    <form action="/trips/<%= trip._id %>/lists" method="POST">
-            <div>
-                <input type='text' name='list' value="<%=list.name %>" id = 'list_<%=list._id %>' > 
-                <label for='list_<%=list._id %>'><%=list.name</label>
-            </div>
-        <% }); %>
-        <br>
-        <input type="submit" value="Add List">
+    
+<h1>Add Items to a List for <%= trip.destination %></h1>
+<form action="/trips/<%= trip._id %>/lists/add-items" method="POST">
+<label for="list">Select List:</label> 
+<select name="listId" id="list">
+    <% trip.lists.forEach(list => { %>
+        <option value="<%=list._id"> <%= list.description %></option>
+    <% }); %> 
+    </select> 
+    <h2> Select Items from Inventory </h2>
+    <% inventory.forEach(item => { %> 
+    <div> <input
+    type ='checkbox'
+name = 'items[]'
+value='<%= item._id %>'
+id='item_<%= item.id %>' <%= item.name %> </label>
+    </div>
+<% }); %> 
+        <br>              
+        <input type="submit" value = 'Add items to List' />
     </form>
+                <a href="/trips/<%= trip._id %>"> Back to Trip Details</a>
+            </body>
+            </html> 
 
-    <a href="/trips/<%= trip._id %>">Back to Trip</a>
-</body>
-</html>
+
