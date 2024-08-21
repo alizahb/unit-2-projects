@@ -13,11 +13,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true, 
   },
-  trips: {
+  trips: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Trip', 
-  },   
-
+  }],
 }); 
     
 

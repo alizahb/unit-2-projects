@@ -10,13 +10,6 @@ const app = express();
 const mongoose = require('mongoose');
 
 
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-  })
-);
 app.use((req, res, next) => {
   console.log(`Request URL: ${req.url}`); 
   console.log('Middleware executed:', req.method, req.url); 
@@ -28,24 +21,30 @@ app.use(express.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
 app.use(morgan('dev'));
 
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 
 
 
 const authController= require('./controllers/auth.js');
+app.use('/auth', authController); 
 const tripsController = require("./controllers/trips.js");
 const usersController = require('./controllers/users.js');
-const itemsController = require('./controllers/items.js');
 
-//const listsController = require("./controllers/lists.js");
 
 mongoose.connect(process.env.MONGODB_URI);
 mongoose.connection.on('connected', () => {
   console.log(`Connected to MongoDB ${mongoose.connection.name}.`);
 });
 
-app.use('/auth', authController); 
-app.use(methodOverride('_method'));
+
+
 
 app.get('/', (req, res) => {
   res.render('index.ejs', {

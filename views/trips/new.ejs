@@ -9,9 +9,11 @@
   <%- include('../partials/_navbar.ejs') %>
   <h1>Add New Trip</h1>
   <form action="/trips" method="POST">
-    Destination: <input type="text" name="destination" /><br />
-    Duration: <input type="number" name="duration"> <br />
-    <input type="submit" value="Add Trip" />
-  </form>
+    <label for="destination">Destination: </label>
+    <input type="text" id="destination" name="destination" required> 
+    <label for="duration">Duration:</label>
+    <input type="number" id="duration" name="duration" required> 
+    <button type="submit"> Add Trip</button>
+    </form>
 </body>
 </html>

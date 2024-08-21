@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Edit List - <%= list.name %></title>
+</head>
+<body>
+    <%- include('../partials/_navbar.ejs') %>
+    <h1>Edit Packing list for <%=trip.destination %></h1>
+    
+    <form action="/trips/<%=trip._id %>/lists/<%=list._id %>?_method=PUT" method = "POST"> 
+        <input type="hidden" name="_method" value="PUT" />
+        <label for="listName">List Name:</label>
+        <input type="text" id="listName" name="listName" value = '<%=list.name %>' required/>
+        
+        <div id="items-container">
+            <% list.items.forEach((item, index) => { %>
+            <div class= 'item-group'>
+                <label for="itemName<%= index %>"> Item Name:</label>
+                <input type="text" name="items[<%=index %>][name]" id="itemName<%= index %>" value = '<%= item.name %>' required>
+            
+                <label for="itemQuantity<%=index %>">Quantity:</label>
+                <input type="number" name="items[<%=index %>] [quantity]" id="itemQuantity<%=index%>" value="<%=item.quantity %>" required>
+
+            </div>
+        <% }) %>
+        </div>
+        
+       
+<button type ='button' onclick="addItem()"> Add another item </button>
+<button type="submit"> Save List </button> 
+</form>
+        <a href="/trips/<%=trip._id %>">Back to Trip details</a>
+        <div id="message" style="display:none;"> Item added successfully!</div>
+<%list.items.forEach(item=> { %>
+<div>
+<p> <%=item.name %> - Quantity: <%=item.quantity %></p>
+<form action="/trips/<%=trip._id %>/lists/<%= list._id%>/items/<%=item._id %>?_method=DELETE" method="POST">
+  <button type="submit">Delete Item</button>
+</form>
+
+</div>
+<% }) %> 
+        
+        <script>
+            function addItem() {
+              const itemContainer=document.getElementById('items-container');
+              const itemCount=itemContainer.children.length;
+          
+              const newItemGroup= document.createElement('div');
+              newItemGroup.className='item-group';
+              
+              newItemGroup.innerHTML=`
+              <label for="itemNames${itemCount +1}">Item Name: </label>
+              <input type="text" name="items[${itemCount}] [name] id="itemName${itemCount +1}" required>
+              <label for ="itemQuantity${itemCount +1}"> Quantity:</label>
+              <input type="number" name="items[${itemCount}] [quantity]" id="itemQuantity${itemCount +1}" required>
+              `;
+              itemContainer.appendChild(newItemGroup); 
+
+              const lastItemGroup = itemContainer.lastElementChild;
+  const nameInput = lastItemGroup.querySelector('input[name$="[name]"]');
+  const quantityInput = lastItemGroup.querySelector('input[name$="[quantity]"]');
+  //if (nameInput) nameInput.value = '';
+  if (quantityInput) quantityInput.value = '';
+            }
+
+             
+          </script> 
+
+
+        </body>
+</html>
+
+

@@ -11,7 +11,7 @@
     <%- include('../partials/_navbar.ejs') %>
    <h1> Add a new Packing list to <%=trip.destination%></h1>
 
-   <form action="/trips/<%= trip._id %>/add-list" method="POST">
+   <form action="/trips/<%= trip._id %>" method="POST">
     <label for = "listName"> List name:</label>
     <input type="text" name="listName" id=" listName" required />
 
@@ -21,7 +21,7 @@
     <input type="text" name="items[0][name]" id="itemName1" required> 
     
     <label for="itemQquantity1"> Quantity: </label>
-    <input type="number" name="items[0] [quantity]" id="itemQuantity1"required> 
+    <input type="number" name="items[0][quantity]" id="itemQuantity1"required> 
   </div>
 </div>
 <button type="button" onclick="addItem()">Add another Item</button>
@@ -44,14 +44,16 @@
     <label for ="itemQuantity${itemCount +1}"> Quantity:</label>
     <input type="number" name="items[${itemCount}] [quantity]" id="itemQuantity${itemCount +1}" required>
     `;
+    itemContainer.appendChild(newItemGroup); 
     const lastItemGroup = itemContainer.lastElementChild;
   const nameInput = lastItemGroup.querySelector('input[name$="[name]"]');
   const quantityInput = lastItemGroup.querySelector('input[name$="[quantity]"]');
-  if (nameInput) nameInput.value = '';
+  //if (nameInput) nameInput.value = '';
   if (quantityInput) quantityInput.value = '';
 }
 
-  
+
+            
   
 </script>
 

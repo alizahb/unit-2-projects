@@ -16,8 +16,9 @@ router.get('/', async (req, res) => {
 
 router.get('/:userId', async (req, res) => {
   try {
-    const pageOwner = await User.findById(req.params.userId);
-    res.render('users/show.ejs', {
+    const pageOwner = await User.findById(req.params.userId).populate('trips').exec();
+ console.log(pageOwner);    
+  res.render('users/show.ejs', {
       pageOwner
     });
   } catch (error) {
