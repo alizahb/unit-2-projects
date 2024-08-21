@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Editing <%= item.name %></title>
+  <title>Edit <%= item.name %></title>
 </head>
 <body>
   <%- include('../partials/_navbar.ejs') %>
     <h1>Edit <%= item.name %></h1>
-    <form action="/users/<%= user._id %>/items/<%= item._id %>?_method=PUT" method="POST">
+    <form action="/trips/<%=tripId %>/packingList/<%= method=item._id%>?_method=PUT" method = POST>
       <label for="Name">Name:</label>
-      <input type="text" name="name" id="name" value="<%= item.name %>">
+      <input type="text" name="name" id="name" value="<%= item.name %>" required>
       <label for ="quantity"> Quantity: </label>
       <input type="number" id="quantity" name="quantity" min = '1'>
       <button type="submit">Update Item</button>

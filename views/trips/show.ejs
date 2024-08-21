@@ -8,27 +8,44 @@
   <body>
     <%- include('../partials/_navbar.ejs') %>
     <h1><%= trip.destination %></h1>
-    <p><%= trip.duration %></p>
+    <h2> <%= trip.duration %> days</h2>
 
-  
-    <h2>Lists</h2>
-    <% if (trip.lists && trip.lists.length > 0) { %>
+    <h2>Packing Lists</h2>
+    <% if (trip.lists.length > 0) { %>
       <ul>
-        <% trip.lists.forEach(list=> { %>
-          <li><%= list.name %></li>
-        <% }); %>
-      </ul>
-    <% } else { %>
-      <p>No lists created yet.</p>
-    <% } %>
+        <% trip.lists.forEach((list) => { %>
+          <h3><%= list.name %></h3>
+          <ul>
+            <% list.items.forEach((item) => { %>
+              <li>
+                <span><%= item.name %> (Quantity: <%= item.quantity %>)</span>
+                <a href="/trips/<%= trip._id %>/lists/<%= list._id %>/items/<%= item._id %>/edit">Edit</a>
+                <form action="/trips/<%= trip._id %>/lists/<%= list._id %>/items/<%= item._id %>/delete" method="POST" style="display:inline;">
+                  <button type="submit">Delete</button>
+                </form>
+              </li>
 
-    <!-- Link to Add lists View -->
-    <a href="/trips/<%=trip._id %>/add-lists">Add a List</a>
+            <% }) %>
+          </ul>
+          <%  } else { %> 
+            <p> No lists made yet</p>
+              <% } %>
+        <% }  %>
+      
+        <a href="/trips/<%= trip._id %>/add-list">Add New List</a>
+        <a href="/">Back to Home</a>
+      </body>
+      </html>
 
-    <!-- Edit and Delete options -->
-    <a href="/trips/<%= trip._id %>/edit">Edit Trip</a>
-    <form action="/trips/<%= trip._id %>?_method=DELETE" method="POST" style="display: inline;">
-      <input type="submit" value="Delete Trip">
-    </form>
+
+
+    
+
+    <a href="/trips/<%= trip._id %>/add-list"> Add a new packing list</a>
+      <a href="/trips/<%= trip._id %>/edit">Edit Trip</a>
+
+<form action="/trips/<%=trip._id %>?_method=DELETE" method="POST">
+  <button type="submit"> Delete Trip</button>
+
   </body>
 </html>

@@ -10,37 +10,30 @@
    
     <h1>Edit Trip - <%= trip.destination %></h1>
     
-    <form action="/trips/<%= trip._id %>?_method=PUT" method="POST">
-        Destination: <input type="text" name="destination" value="<%= trip.destination %>"><br>
-        Duration: <textarea name="duration"><%= trip.duration %></textarea><br>
-        <input type ='submit' value="Update Trip"> 
-    </form> 
-    
-    <h2> Lists </h2>
-        <%if (trip.lists && trip.lists.length > 0) { %>
-        <ul>
-            <% trip.lists.forEach(list => { %>
-                <li>
-                    <%= list.description %>
-                    <a href="/trips/<%= trip._id %>/lists/<%= list._id %>/edit"> Edit</a>
-                 <form action="/trips/<%=trip._id %>/lists/<%=list._id %>?_method=DELETE" method = "POST"   
-                    style = "display:inline">
-                <button type="submit"> Delete </button>
-            </form>
-                </li>
-            <% }) %>
-        </ul>
-   <% } else { %>
-        <p>No lists yet</p>
-        <% } %>
-    
-        <h2> Add New List </h2>
-        <form action="/trips/<%=trip._id %>/lists" method="POST">
-        Description: <input type="text" name="description" placeholder = 'Add list description'> <br> </input type>
-        <input type ='submit' value = 'Add List'> 
-       <button type="submit">Add List</button></form>
-       <input type="submit" value="Update Trip">
-    </form>
+    <form action='/trips/<%= trip._id %>?_method=PUT' method='POST'>
+
+        <label for="destination"> Destination:</label>
+        <input type ="text" name = "destination" id = " destination" value ="<%= trip.destination%>" required>
+  
+      <label for="duration">Duration</label>
+            <input type="number" id="duration" name="duration" value="<%=trip.duration %>" required>
+
+<button type="submit"> Update Trip</button>
+</form>
+
+            <h2> Packing Lists</h2>
+
+
+  <% trip.lists.forEach(list => { %> 
+    <li><strong> <%= list.name %></strong>
+ <% }) %>  
+
+
+
+<form action="/<%=trip._id %>" method="POST" >
+  <button type="submit"> Delete Trip</button>         
+            
+ 
 </body>
 </html>
 

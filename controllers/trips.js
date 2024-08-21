@@ -1,32 +1,60 @@
 const express = require("express");
 const router = express.Router();
-const mongoose = require('mongoose'); 
+//const mongoose = require('mongoose'); 
 const Trip = require("../models/trip.js");
-const List = require("../models/list.js");
-const User = require("../models/user.js"); 
+//const User = require("../models/user.js");
+//const Item = require('../models/item.js'); 
+//const List = require("../models/list.js");
+//const User = require("../models/user.js"); 
+
+//ADD A list to trip
+router.post('/:tripId/add-list', async (req, res) => {
+  console.log('list Data:', req.body);
+  console.log('Trip Id:', req.params.tripId)
+  try {
+    const trip = await Trip.findById(req.params.tripId);
+    if (!trip) {
+      return res.status(404).send('Trip not found'); 
+    }
+    const newList= {
+      name: req.body.listName,
+      items: req.body.items, 
+    }; 
+
+   trip.lists.push(newList);
+    await trip.save();
+    res.redirect(`/trips/${trip._id}`);
+  }catch(error) {
+    console.error(error);
+    res.send('Error adding list to trip'); 
+  }
+
+  });  
 
 
-//trip index
+
+
+//INDEX- Show all trips of user 
 router.get('/', async (req, res) => {
   try {
     const userTrips = await Trip.find({ owner: req.session.user._id });
-    res.render('trips/index.ejs', {trips: userTrips,
-    });
+    res.render('trips/index.ejs', {trips: userTrips});
   } catch (error) {
     res.send(error); 
   }
 }); 
 
-//new trip form
+//render new trip form 
 router.get('/new', (req, res) => {
   res.render('trips/new.ejs'); 
 }); 
 
+
+
 //create a new trip
 router.post('/', async (req, res) => {
-  console.log('request body', req.body); 
   try {
-    req.body.owner = req.session.user._id;
+    req.body.owner = req.session.user._id; //setting owner of the trip 
     await Trip.create(req.body);
     res.redirect('/trips'); 
  } catch (error) {
@@ -34,84 +62,43 @@ router.post('/', async (req, res) => {
   }
 }); 
 
-//show trip details
-router.get('/:tripId', async (req, res) => {
-  try {
-    const trip = await Trip.findById(req.params.tripId).populate(
-      'lists'
-    ); 
-    if (!trip) {
-      return res.status(404).send('Trip not found');
-    }
-    const allLists = await List.find({}); 
-    res.render('trips/show.ejs', {
-      trip: trip,
-      allLists: allLists,
-    });
-  } catch (error) {
-    res.send(error); 
-  }
-});
+//Show details for a single trip
 
-//edit trip page 
+  router.get('/:tripId', async (req, res) => {
+    try {
+      const trip = await Trip.findById(req.params.tripId).populate({
+        path:'lists',
+        populate: {path: 'items'}
+      }) .exec();
+      if(!trip) {
+        return res.status(404).send('Trip not found');
+      }
+      res.render('trips/show.ejs', {trip}); 
+    } catch (error) {
+      res.send(error); 
+    }
+  });
+  
+//Edit trip details 
+
 router.get("/:tripId/edit", async (req, res) => {
   try {
-    const trip = await Trip.findById(req.params.tripId).populate('lists'); 
-    res.render("trips/edit.ejs", { trip }); 
-      //trip: trip, 
-      //allLists: allLists,
-      //description: list.description, 
-    //});
+    const trip = await Trip.findById(req.params.tripId);
+    if (!trip) {
+      return res.status(404).send('Trip not found'); 
+    }
+    res.render('trips/edit.ejs', {trip});
   } catch (error) {
     res.send(error);
   }
 });
-/*
-//add lists to a trip page 
-router.get("/trips/:tripId/add-lists", async (req, res) => {
-  try {
-    const trip = await Trip.findById(req.params.tripId).populate('lists'); 
-    if (!trip) return res.status(404).send('Trip not found'); 
-    const newList = new List ({ description : req.body.description }); 
-    trips.lists.push(newList); 
-    await newList.save(); 
-    await trip.save(); 
-    res.redirect('/trips/${trip._id}/edit'); 
-    res.render('trips/add-lists.ejs', {trip, allLists }); 
-  } catch (error) {
-    console.error(error); 
-    res.redirect('/trips'); 
-  }
-}); 
-  */  
+ 
 
-  // render an Add lists view
-  router.get("/:tripId/add-lists", async (req, res) => {
-    try {
-      const trip = await Trip.findById(req.params.tripId).populate("lists");
-      const allLists = await List.find({});
-      const user = await User.findById(req.session.user._id).populate('inventory'); 
-      
-      if (!trip) {
-        return res.status(404).send('Trip not found'); 
-      }
-      if (!user) {
-        return res.status(404).send('User not found');   
-      }
-      res.render("trips/add-lists.ejs", {
-        trip: trip, 
-        allLists: allLists, 
-        inventory: user.inventory, 
-      });
-    } catch (error) {
-      console.error(error);
-      res.send("An error occurred while fetching data.");
-    }
-  });
-   
 
-//update trip details
+//handle updating trip details 
 router.put('/:tripId', async (req, res) => {
+  console.log('PUT route'); 
+  console.log('Request body:', req.body); 
     try {
       const tripToUpdate = await Trip.findById(req.params.tripId);
       if (!tripToUpdate) {
@@ -119,15 +106,8 @@ router.put('/:tripId', async (req, res) => {
       }
       tripToUpdate.destination = req.body.destination; 
       tripToUpdate.duration = req.body.duration; 
-      
-      const selectedLists = Array.isArray(req.body.lists)
-      ? req.body.lists
-      : [req.body.lists]; 
-      const validLists = await List.find({ _id: { $in: selectedLists } });
-    
-      tripToUpdate.lists = validLists.map(list => list._id); 
-      await tripToUpdate.save();
-      res.redirect('/trips'); 
+      await tripToUpdate.save(); 
+      res.redirect(`/trips/${req.params.tripId}`); 
     } catch (error) {
       console.error(error);
       res.send('An error occured while updating trip'); 
@@ -135,58 +115,15 @@ router.put('/:tripId', async (req, res) => {
 
 }); 
 
-/*
-  router.post('/trips/:id/lists', async (req, res) => {
-    try {
-    const tripId = req.params.id; 
-      const trip = awaitTrip.findById(tripId);
-      if (!trip) {
-        return res.redirect('/trips');
-      }
-      const newList = newList({ description: req.body.description });
-      trip.lists.push(newList);
-      await newList.save();
-      await trip.save();
-      res.redirect(`/trips/${tripId}/edit`);
-    } catch (error) {
-      console.error(error);
-      res.redirect('/trips');
-    };
-  });
-*/
 
 
-  router.post('/:tripId/lists', async (req, res) => {
-    try {
-      const trip = await Trip.findById(req.params.tripId); 
-      
-      if(!trip) {
-        return res.status(404).send('Trip not found'); 
-      }
-      const itemIds = req.body.items
-        ? (Array.isArray(req.body.items) ? req.body.items : [req.body.items]) :
-        [];
-      
-      const objectIds = itemIds.map(id => mongoose.Types.ObjectId(id));
-      const newList = new List({
-        description: req.body.description, 
-        items: objectIds,
-      });
-      await newList.save(); 
-      trip.lists.push(newList._id); 
-      await trip.save(); 
-      res.redirect(`/trips/${trip._id}/edit`); 
-    } catch (error) {
-      console.error(error);
-      res.send('An error occured while adding list'); 
-    }
-  }); 
-     
-
-
+//delete a trip
   router.delete("/:tripId", async (req, res) => {
     try {
       const trip = await Trip.findById(req.params.tripId);
+      if (!trip) {
+        return res.status(404).send('Trip not found'); 
+      }
       await trip.deleteOne();
       res.redirect(`/trips`);
     } catch (error) {
@@ -194,32 +131,19 @@ router.put('/:tripId', async (req, res) => {
     }
   });
 
-
-
-  
-//Post -add lists to trip 
-
-router.post('/:tripId/lists', async (req, res) => {
+  //GET to render and list to trip view
+  router.get('/:tripId/add-list', async (req, res) => {
     try {
       const trip = await Trip.findById(req.params.tripId);
-      const listIds= Array.isArray(req.body.lists) 
-      ? req.body.lists : [req.body.lists];
-      
-      trip.lists = [
-        ...new Set ([...trip.lists, ...listIds]),
-      ];
-      await trip.save(); 
-
-      res.redirect(`trips/${req.params.recipeId}`); 
-    } catch(error) {
+      if (!trip) {
+        return res.status(404).send('Trip not found');
+      }
+      res.render('trips/add-list.ejs', {trip}); 
+    } catch (error) {
       console.error(error);
-      resnsend('An error occured while updating your trip'); 
+      res.send('An error occurred while fetching data'); 
     }
-  });
-      /*const newList = newList({
-        items: selectedItems, 
-        trip: trip._id
-      }); */
- 
+  }); 
+
   
   module.exports = router 

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add packing list for <%=trip.destination %></title>
+   
+
+</head>
+<body>
+    <%- include('../partials/_navbar.ejs') %>
+   <h1> Add a new Packing list to <%=trip.destination%></h1>
+
+   <form action="/trips/<%= trip._id %>/add-list" method="POST">
+    <label for = "listName"> List name:</label>
+    <input type="text" name="listName" id=" listName" required />
+
+<div id="items-container">
+  <div class="item-group"> 
+    <label for="itemName1"> Item Name:</label>
+    <input type="text" name="items[0][name]" id="itemName1" required> 
+    
+    <label for="itemQquantity1"> Quantity: </label>
+    <input type="number" name="items[0] [quantity]" id="itemQuantity1"required> 
+  </div>
+</div>
+<button type="button" onclick="addItem()">Add another Item</button>
+<button type="submit">Save List</button>
+</form>
+
+<a href="/trips/<%=trip._id %>">Back to Trip Details</a>
+
+<script>
+  function addItem() {
+    const itemContainer=document.getElementById('items-container');
+    const itemCount=itemContainer.children.length;
+
+    const newItemGroup= document.createElement('div');
+    newItemGroup.className='item-group';
+    
+    newItemGroup.innerHTML=`
+    <label for="itemNames${itemCount +1}">Item Name: </label>
+    <input type="text" name="items[${itemCount}] [name] id="itemName${itemCount +1}" required>
+    <label for ="itemQuantity${itemCount +1}"> Quantity:</label>
+    <input type="number" name="items[${itemCount}] [quantity]" id="itemQuantity${itemCount +1}" required>
+    `;
+    const lastItemGroup = itemContainer.lastElementChild;
+  const nameInput = lastItemGroup.querySelector('input[name$="[name]"]');
+  const quantityInput = lastItemGroup.querySelector('input[name$="[quantity]"]');
+  if (nameInput) nameInput.value = '';
+  if (quantityInput) quantityInput.value = '';
+}
+
+  
+  
+</script>
+
+
+
+</body>
+</html>

@@ -12,7 +12,7 @@
   <% trips.forEach(trip => { %>
   <div>
     <a href="/trips/<%= trip._id %>">
-      <h2><%= trip.destination %></h2>
+      <h2><%= trip.destination %>- <%= trip.duration %> days</h2>
     </a>
   </div>
   <% }); %>
