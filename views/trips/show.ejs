@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= trip.destination %></title>
+    <link rel="stylesheet" href="/styles.css"> 
   </head>
   <body>
     <%- include('../partials/_navbar.ejs') %>
@@ -19,14 +20,14 @@
             <% list.items.forEach((item) => { %>
               <li>
                 <span><%= item.name %> (Quantity: <%= item.quantity %>)</span>
-                <a href="/trips/<%= trip._id %>/lists/<%= list._id %>/edit">Edit</a>
+                </li>
+                <% }) %>
+              </ul>
+                <a href="/trips/<%= trip._id %>/lists/<%= list._id %>/edit">Edit List</a>
                 <form action="/trips/<%= trip._id %>/lists/<%= list._id %>?_method=DELETE" method="POST" style="display:inline;">
-                  <button type="submit">Delete</button>
+                  <button type="submit">Delete List</button>
                 </form>
-              </li>
-
-            <% }) %>
-          </ul>
+              </li> 
           <% }) %>
         </ul>
           <%  } else { %> 
@@ -34,8 +35,7 @@
               <% } %>
   
       
-  
-        <a href="/">Back to Home</a>
+
       </body>
       </html>
 
@@ -48,6 +48,6 @@
 
 <form action="/trips/<%=trip._id %>?_method=DELETE" method="POST">
   <button type="submit"> Delete Trip</button>
-
+<a href="/trips"> Back to My Trips </a>
   </body>
 </html>
