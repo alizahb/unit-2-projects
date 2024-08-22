@@ -4,15 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Community Page</title>
-  <link rel="stylesheet" href="/styles.css"> 
+  <link rel="stylesheet" href="css/explore.css"> 
 </head>
 <body>
   <%- include('../partials/_navbar.ejs') %>
-  <h1>Explore Our Community</h1>
+  <h1>Explore our Community</h1>
+
   <ul>
     <% allUsers.forEach((user)=>{ %>
       <li><a href="/users/<%= user._id %>"><%= user.username %></a></li>
     <% }) %>
   </ul>
+
 </body>
 </html>

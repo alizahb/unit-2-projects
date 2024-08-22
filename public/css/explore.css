@@ -1,0 +1,34 @@
+
+html, body {
+    height: 100%; 
+    margin: 0; 
+    padding: 0; 
+}
+
+body{ 
+    display: flex; 
+    flex-direction:column; 
+    background-color:  #cbdfdd; 
+    align-items: center; 
+  
+}
+
+ul {
+    list-style-type: none; 
+    padding: 0; 
+   
+   
+}
+
+ul li {
+    margin-bottom: 10px; 
+  
+   
+}
+
+ul li a {
+    color: #091e2c; 
+    text-decoration: none; 
+   font-size: 40px; 
+    justify-items: center; 
+}

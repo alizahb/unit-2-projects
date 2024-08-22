@@ -12,8 +12,10 @@
    <h1> Add a new Packing list to <%=trip.destination%></h1>
 
    <form action="/trips/<%= trip._id %>" method="POST">
+    <div id="name-container">
     <label for = "listName"> List name:</label>
     <input type="text" name="listName" id=" listName" required />
+</div>
 
 <div id="items-container">
   <div class="item-group"> 

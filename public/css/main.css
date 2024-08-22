@@ -1,0 +1,24 @@
+body {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+justify-content: center; 
+margin-top: 80px; 
+}
+
+h1 {
+    font-size: 65px; 
+}
+form {
+    font-size: 40px; 
+}
+
+button {
+    background-color: #9e3e2d;
+    color: #FFFDD0; 
+    border: none; 
+    font-size: 25px; 
+     text-align: center; 
+     text-decoration:none; 
+     border-radius: 5px; 
+}

@@ -1,8 +1,50 @@
-h1 {
-    color: palevioletred; 
-    font-size:  70px;
+@import url('https://fonts.googleapis.com/css2?family=Ga+Maamli&display=swap');
+
+html, body {
+    height: 100%; 
+    margin: 0; 
+    padding: 0; 
 }
+
 body {
-    background-image: url('https://i.etsystatic.com/10809981/r/il/d00ddf/3218339646/il_1588xN.3218339646_rh8n.jpg'); 
-    background-size: 1350px 1200px; 
+display: flex;
+flex-direction: column;  
+align-items: center; 
+justify-content: center; 
+background-color:#031d28; 
+background-image: url('https://i.etsystatic.com/10809981/r/il/d00ddf/3218339646/il_1588xN.3218339646_rh8n.jpg'); 
+background-repeat: no-repeat; 
+background-size: contain;   
+background-position: top center; 
+width: 100%;  
+box-sizing: border-box; 
+min-height: 150vh; 
+width: auto; 
+
+}
+
+h1 {
+    justify-items: center;
+    color: #9e3e2d;
+    font-size:  100px;
+    font-family: "Ga Maamli", sans-serif; 
+    font-weight: 400; 
+    margin: 0; 
+    
+}
+h2{
+    justify-items: center;
+    color: #9e3e2d;
+    font-size:  50px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serifc;
+    margin: 0;  
+
+}
+
+main {
+    flex: 1; 
+    display:flex; 
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }

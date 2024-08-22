@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= trip.destination %></title>
-    <link rel="stylesheet" href="/styles.css"> 
+    <link rel="stylesheet" href="/css/tripshow.css"> 
   </head>
   <body>
     <%- include('../partials/_navbar.ejs') %>
     <h1><%= trip.destination %></h1>
     <h2> <%= trip.duration %> days</h2>
-
+<div class="lists">
     <h2>Packing Lists</h2>
     <% if (trip.lists.length > 0) { %>
       <ul>
@@ -23,7 +23,7 @@
                 </li>
                 <% }) %>
               </ul>
-                <a href="/trips/<%= trip._id %>/lists/<%= list._id %>/edit">Edit List</a>
+                <a href="/trips/<%= trip._id %>/lists/<%= list._id %>/edit" class="editlist">Edit List</a>
                 <form action="/trips/<%= trip._id %>/lists/<%= list._id %>?_method=DELETE" method="POST" style="display:inline;">
                   <button type="submit">Delete List</button>
                 </form>
@@ -33,21 +33,24 @@
           <%  } else { %> 
             <p> No lists made yet</p>
               <% } %>
-  
+          </div> 
       
+          <a href="/trips" class= "link"> Back to My Trips </a>
+<div class = "showlinks">
+  <a href="/trips/<%= trip._id %>/add-list" class="link"> Add a new packing list</a>
+    <a href="/trips/<%= trip._id %>/edit" class ="link">Edit Trip</a>
+
+
+
+</form>
+</div>
+
 
       </body>
+  
+
       </html>
 
+      <form action="/trips/<%=trip._id %>?_method=DELETE" method="POST" class="link">
+      <button type="submit"> Delete Trip</button>
 
-
-    
-
-    <a href="/trips/<%= trip._id %>/add-list"> Add a new packing list</a>
-      <a href="/trips/<%= trip._id %>/edit">Edit Trip</a>
-
-<form action="/trips/<%=trip._id %>?_method=DELETE" method="POST">
-  <button type="submit"> Delete Trip</button>
-<a href="/trips"> Back to My Trips </a>
-  </body>
-</html>

@@ -6,21 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>Edit List - <%= list.name %></title>
-    <link rel="stylesheet" href="/styles.css"> 
+    <link rel="stylesheet" href="/css/listedit.css"> 
 
 </head>
 <body>
     <%- include('../partials/_navbar.ejs') %>
     <h1>Edit Packing list for <%=trip.destination %></h1>
+  
     
-    <form action="/trips/<%=trip._id %>/lists/<%=list._id %>?_method=PUT" method = "POST"> 
+      <form action="/trips/<%=trip._id %>/lists/<%=list._id %>?_method=PUT" method = "POST" class="edit-list-form"> 
         <input type="hidden" name="_method" value="PUT" />
-        <label for="listName">List Name:</label>
-        <input type="text" id="listName" name="listName" value = '<%=list.name %>' required/>
-        
-        <div id="items-container">
+<div id="list-name">
+        <label for="list-name">List Name:</label>
+        <input type="text"  name="listName" value = '<%=list.name %>' required/>
+      </div>
+     
             <% list.items.forEach((item, index) => { %>
-            <div class= 'item-group'>
+            <div id= 'item-group'>
                 <label for="itemName<%= index %>"> Item Name:</label>
                 <input type="text" name="items[<%=index %>][name]" id="itemName<%= index %>" value = '<%= item.name %>' required>
             
@@ -31,20 +33,23 @@
         <% }) %>
         </div>
         
-       
+
 <button type ='button' onclick="addItem()"> Add another item </button>
 <button type="submit"> Save List </button> 
+  
 </form>
-        <a href="/trips/<%=trip._id %>">Back to Trip details</a>
-        <div id="message" style="display:none;"> Item added successfully!</div>
+     
+
 <%list.items.forEach(item=> { %>
-<div>
+<div id="item-spec">
 <p> <%=item.name %> - Quantity: <%=item.quantity %></p>
 <form action="/trips/<%=trip._id %>/lists/<%= list._id%>/items/<%=item._id %>?_method=DELETE" method="POST">
   <button type="submit">Delete Item</button>
+</div> 
 </form>
 
-</div>
+
+
 <% }) %> 
         
         <script>
@@ -75,6 +80,7 @@
 
 
         </body>
+        <a href="/trips/<%=trip._id %>" id="back">Back to Trip details</a>
 </html>
 
 

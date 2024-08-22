@@ -1,0 +1,27 @@
+
+nav {
+    display:flex; 
+    flex-direction: row; 
+    justify-content: center; 
+    justify-content: space-between;  
+    position:fixed; 
+    top: 0;
+    left: 0; 
+    width: 100%; 
+    background-color: #FFFDD0; 
+    z-index: 1000;
+    padding: 10px; 
+
+}
+
+nav a {
+    color: #e78427; 
+    font-size: 25px; 
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; 
+    text-decoration: none; 
+    padding: 8px 16px; 
+    margin: 0 15px; 
+    border-radius: 4px; 
+    
+  
+}

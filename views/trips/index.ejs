@@ -4,18 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Trips</title>
-  <link rel="stylesheet" href="/styles.css"> 
+  <link rel="stylesheet" href="/css/trips.css"> 
 </head>
 <body>
   <%- include('../partials/_navbar.ejs') %>
   <h1>My Trips</h1>
-  <a href="/trips/new">Add New Trip</a>
+  
   <% trips.forEach(trip => { %>
   <div>
     <a href="/trips/<%= trip._id %>">
       <h2><%= trip.destination %>- <%= trip.duration %> days</h2>
     </a>
   </div>
+
   <% }); %>
+  <br>
+  <br>
+
+  <a href="/trips/new">Add New Trip</a>
+
 </body>
 </html>
