@@ -59,11 +59,9 @@ router.post('/sign-in', async (req, res) => {
       username: userInDatabase.username,
       _id: userInDatabase._id
     };
-
-  //req.session.save(()=> {
-      res.redirect('/'); 
-    }/*);*/
-  /*}*/ catch (error) {
+  res.redirect('/'); 
+    }
+  catch (error) {
     console.log(error);
     res.redirect('/');
   }

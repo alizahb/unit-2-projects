@@ -11,10 +11,6 @@ const session=require('express-session');
 const app = express();
 const mongoose = require('mongoose');
 
-
-
-
-
 app.use((req, res, next) => {
   console.log(`Request URL: ${req.url}`); 
   console.log('Middleware executed:', req.method, req.url); 
@@ -36,8 +32,6 @@ app.use(
 );
 
 
-
-
 const authController= require('./controllers/auth.js');
 app.use('/auth', authController); 
 const tripsController = require("./controllers/trips.js");
@@ -50,7 +44,6 @@ mongoose.connection.on('connected', () => {
 });
 
 
-
 app.get('/', (req, res) => {
   res.render('index.ejs', {
     user: req.session.user,
@@ -58,23 +51,20 @@ app.get('/', (req, res) => {
 });
 
 
-
 const isSignedIn = require('./middleware/is-signed-in.js');
 const passUserToView = require('./middleware/pass-user-to-view.js');
 app.use(isSignedIn);
 app.use(passUserToView);
 
-//app.use('/items', itemsController);
+
 app.use('/auth', authController);
 app.use('/users', usersController);
 app.use("/trips", tripsController);
-//app.use('/trips/:tripId/packingList', listsController);
 
 
 app.use((req, res) => {
   res.status(404).send('Not Found'); 
 });
-
 
 
 const port = process.env.PORT ? process.env.PORT : '3000';

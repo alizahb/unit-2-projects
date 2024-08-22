@@ -1,14 +1,9 @@
 const express = require("express");
 const router = express.Router();
-//const mongoose = require('mongoose'); 
 const Trip = require("../models/trip.js");
 const User = require("../models/user.js");
-//const Item = require('../models/item.js'); 
-//const User = require("../models/user.js"); 
 
 
-
- //INDEX- Show all trips of user 
  router.get('/', async (req, res) => {
   try {
     const userTrips = await Trip.find({ owner: req.session.user._id });
@@ -19,13 +14,11 @@ const User = require("../models/user.js");
 }); 
 
 
-//render new trip form 
 router.get('/new', (req, res) => {
   res.render('trips/new.ejs'); 
 }); 
 
 
-//create a new trip
 router.post('/', async (req, res) => {
   try {
 
@@ -45,8 +38,6 @@ router.post('/', async (req, res) => {
 }); 
 
 
-//Show details for a single trip
-
 router.get('/:tripId', async (req, res) => {
   try {
     const trip = await Trip.findById(req.params.tripId).populate({
@@ -64,8 +55,6 @@ router.get('/:tripId', async (req, res) => {
 
 
 
-//Edit trip details 
-
 router.get("/:tripId/edit", async (req, res) => {
   try {
     const trip = await Trip.findById(req.params.tripId);
@@ -79,8 +68,6 @@ router.get("/:tripId/edit", async (req, res) => {
 });
  
 
-
-//handle updating trip details 
 router.put('/:tripId', async (req, res) => {
   console.log('PUT route'); 
   console.log('Request body:', req.body); 
@@ -101,8 +88,6 @@ router.put('/:tripId', async (req, res) => {
 }); 
 
 
-
-//delete a trip
   router.delete("/:tripId", async (req, res) => {
     try {
       const trip = await Trip.findById(req.params.tripId);
@@ -118,7 +103,6 @@ router.put('/:tripId', async (req, res) => {
 
 
 
-  //GET to render add list to trip view
   router.get('/:tripId/add-list', async (req, res) => {
     try {
       const trip = await Trip.findById(req.params.tripId);
@@ -133,8 +117,6 @@ router.put('/:tripId', async (req, res) => {
   }); 
 
 
-
-  //add list to trip 
   router.post('/:tripId', async (req, res) => {
     console.log('list Data:', req.body);
     console.log('Trip Id:', req.params.tripId)
@@ -159,7 +141,7 @@ router.put('/:tripId', async (req, res) => {
     });  
 
 
-//edit a list within a trip page render
+
 router.get('/:tripId/lists/:listId/edit', async (req, res) => {
   console.log(`GET/trips/${req.params.tripId}.lists/${req.params.listId}/edit`); 
   try {
@@ -178,7 +160,7 @@ router.get('/:tripId/lists/:listId/edit', async (req, res) => {
   }
 }); 
 
-//handle list update
+
 router.put('/:tripId/lists/:listId', async(req, res) => {
   try {
     const trip = await Trip.findById(req.params.tripId);
@@ -203,7 +185,6 @@ router.put('/:tripId/lists/:listId', async(req, res) => {
 }); 
 
 
-//Delete specific list item
 router.delete('/:tripId/lists/:listId/items/:itemId', async (req, res) => {
   try {
     const trip = await Trip.findById(req.params.tripId);
@@ -228,7 +209,6 @@ router.delete('/:tripId/lists/:listId/items/:itemId', async (req, res) => {
   });
 
 
-//delete a list from trip
 router.delete('/:tripId/lists/:listId', async (req, res) => {
   console.log('deleting:', req.params); 
   try {
@@ -247,9 +227,6 @@ res.redirect(`/trips/${req.params.tripId}`);
     res.status(500).send('An error occured while deleting your list')
   }
 }); 
-
-
-    
    
 
   module.exports = router 
